@@ -1,69 +1,153 @@
-// All codes are adapt from YTLite
+// All Codes are adapt from YTLite and uYouEnhanced + Some of my research
 #import "Headers.h"
+
+// Navigation Bar
+
+// YouTube Premium logo
+%hook UIImageView
+- (void)setImage:(UIImage *)image {
+    if (!IS_ENABLED(YTPremiumLogo)) {
+        %orig;
+        return;
+    }
+    NSString *imgDesc = [image description];
+    BOOL isLight = [imgDesc containsString:@"Resources: youtube_logo)"];
+    BOOL isDark = [imgDesc containsString:@"Resources: youtube_logo_dark)"];
+    if (isLight || isDark) {
+        NSString *resourcesPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"Frameworks/Module_Framework.framework/Innertube_Resources.bundle"];
+        // Check if the first path exists; if not, use the fallback
+        if (![[NSFileManager defaultManager] fileExistsAtPath:resourcesPath]) {
+            resourcesPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"Innertube_Resources.bundle"];
+        }
+        NSBundle *frameworkBundle = [NSBundle bundleWithPath:resourcesPath];
+        if (frameworkBundle) {
+            if (isLight) {
+                image = [UIImage imageNamed:@"youtube_premium_logo" inBundle:frameworkBundle compatibleWithTraitCollection:nil];
+            } else if (isDark) {
+                image = [UIImage imageNamed:@"youtube_premium_logo_white" inBundle:frameworkBundle compatibleWithTraitCollection:nil];
+            }
+        }
+    }
+    %orig(image);
+}
+%end
+
+/* Second Way
+// YouTube Premium Logo - @arichornlover & bhackel
+%hook YTHeaderLogoControllerImpl // originally was "YTHeaderLogoController"
+- (void)setTopbarLogoRenderer:(YTITopbarLogoRenderer *)renderer {
+    // Modify the type of the icon before setting the renderer
+    YTIIcon *icon = renderer.iconImage;
+    if (icon) {
+        icon.iconType = YT_PREMIUM_LOGO; // magic number (537) for Premium icon, hopefully it doesnt change. 158 (YT_DEFAULT_LOGO) is default logo.
+        }
+    // Use this modified renderer
+    %orig;
+}
+// For when spoofing before 18.34.5
+- (void)setPremiumLogo:(BOOL)isPremiumLogo {
+    isPremiumLogo = YES;
+    %orig;
+}
+- (BOOL)isPremiumLogo {
+    return YES;
+}
+%end
+*/
+
+// Hide Navigation Bar Buttons
+%hook YTRightNavigationButtons
+- (void)layoutSubviews {
+    %orig;
+    if (IS_ENABLED(HideNoti)) self.notificationButton.hidden = YES;
+    if (IS_ENABLED(HideSearch)) self.searchButton.hidden = YES;
+    for (UIView *subview in self.subviews) {
+        if (IS_ENABLED(HideVoiceSearch) && [subview.accessibilityLabel isEqualToString:NSLocalizedString(@"search.voice.access", nil)]) subview.hidden = YES;
+        if (IS_ENABLED(HideCast) && [subview.accessibilityIdentifier isEqualToString:@"id.mdx.playbackroute.button"]) subview.hidden = YES;
+    }
+}
+%end
+
+%hook YTHeaderLogoController
+- (YTHeaderLogoController *)init {
+    return IS_ENABLED(HideYTLogo) ? NULL : %orig;
+}
+%end
+
+%hook YTHeaderLogoControllerImpl
+- (YTHeaderLogoController *)init {
+    return IS_ENABLED(HideYTLogo) ? NULL : %orig;
+}
+%end
+
+%hook YTNavigationBarTitleView
+- (void)layoutSubviews {
+    %orig;
+    if (self.subviews.count > 1 && [self.subviews[1].accessibilityIdentifier isEqualToString:@"id.yoodle.logo"] && IS_ENABLED(HideYTLogo)) {
+        self.subviews[1].hidden = YES;
+    }
+}
+- (void)setShouldCenterNavBarTitleView:(BOOL)center {
+    if (IS_ENABLED(CenterYTLogo)) {
+        center = YES;
+    }
+    %orig(center);
+    [self alignCustomViewToCenterOfWindow];
+}
+- (BOOL)shouldCenterNavBarTitleView {
+    return IS_ENABLED(CenterYTLogo) ? YES : %orig;
+}
+%end
 
 %hook YTIElementRenderer
 - (NSData *)elementData {
-    // if (self.hasCompatibilityOptions && self.compatibilityOptions.hasAdLoggingData && ytlBool(@"noAds")) return nil;
-
     NSString *description = [self description];
-
-    // Use YouTube-X
-    // NSArray *ads = @[@"brand_promo", @"product_carousel", @"product_engagement_panel", @"product_item", @"text_search_ad", @"text_image_button_layout", @"carousel_headered_layout", @"carousel_footered_layout", @"square_image_layout", @"landscape_image_wide_button_layout", @"feed_ad_metadata"];
-    // if (ytlBool(@"noAds") && [ads containsObject:description]) {
-    //    return [NSData data];
-    // }
-    // horizontal-video-shelf.eml = Continue watching, breaking news - like in YTLite
+    // Fast checks
+    if (IS_ENABLED(HideHoriShelf) && [description containsString:@"horizontal-video-shelf.eml"]) return nil;
+    if (IS_ENABLED(HideGenMusicShelf) && [description containsString:@"feed_nudge.view"]) return nil;
+    if (IS_ENABLED(HideMixPlayLists) && [description containsString:@"eml.vwc"]) return nil;
+    if (IS_ENABLED(HideShortsShelf) && [description containsString:@"eml.shorts-shelf"]) return nil;
+    /*
     NSArray *shortsToRemove = @[@"shorts_shelf.eml", @"shorts_video_cell.eml", @"6Shorts", @"eml.shorts-shelf"];
     for (NSString *shorts in shortsToRemove) {
         if ([description containsString:shorts] && ![description containsString:@"history*"]) {
             return nil;
         }
     }
-
+    */
     return %orig;
-}
-%end
-
-// Hide Navigation Bar Buttons
-%hook YTRightNavigationButtons
-- (void)layoutSubviews {
-    %orig;
-
-    self.notificationButton.hidden = YES;
-    // if (HideSearch()) self.searchButton.hidden = YES;
-
-    for (UIView *subview in self.subviews) {
-        // if (NoVoiceSearch() && [subview.accessibilityLabel isEqualToString:NSLocalizedString(@"search.voice.access", nil)]) subview.hidden = YES;
-        if ([subview.accessibilityIdentifier isEqualToString:@"id.mdx.playbackroute.button"]) subview.hidden = YES;
-    }
 }
 %end
 
 %hook YTSearchViewController
 - (void)viewDidLoad {
     %orig;
-    [self setValue:@(NO) forKey:@"_isVoiceSearchAllowed"];
+    if (IS_ENABLED(HideVoiceSearch)) {
+        [self setValue:@(NO) forKey:@"_isVoiceSearchAllowed"];
+    }
 }
-- (void)setSuggestions:(id)arg1 {}
+// - (void)setSuggestions:(id)arg1 {}
 %end
 
+/* idk this is a great feature to add or not
 %hook YTPersonalizedSuggestionsCacheProvider
 - (id)activeCache { return nil; }
 %end
+*/
 
 // Hide Subbar
 %hook YTMySubsFilterHeaderView
-- (void)setChipFilterView:(id)arg1 {}
+- (void)setChipFilterView:(id)arg1 { if (!(IS_ENABLED(HideSubbar))) %orig; }
 %end
 
 %hook YTHeaderContentComboView
-- (void)enableSubheaderBarWithView:(id)arg1 {}
-- (void)setFeedHeaderScrollMode:(int)arg1 { %orig(0); }
+- (void)enableSubheaderBarWithView:(id)arg1 { if (!(IS_ENABLED(HideSubbar))) %orig; }
+- (void)setFeedHeaderScrollMode:(int)arg1 { IS_ENABLED(HideSubbar) ? %orig(0) : %orig; }
 %end
 
 %hook YTChipCloudCell
 - (void)layoutSubviews {
-    if (self.superview) {
+    if (self.superview && IS_ENABLED(HideSubbar)) {
         [self removeFromSuperview];
     } %orig;
 }
@@ -85,6 +169,7 @@
 - (id)playbackRouteButton { return nil; }
 %end
 
+// อื่นๆ
 // Prevent YouTube from asking to update the app
 %hook YTGlobalConfig
 - (BOOL)shouldBlockUpgradeDialog { return YES; }
@@ -311,10 +396,10 @@
 %end
 */
 
-// Remove "Play next in queue" from the menu @PoomSmart (https://github.com/qnblackcat/uYouPlus/issues/1138#issuecomment-1606415080) and Listen in YouTube Music @Tonwalter888
+// Remove "Play next in queue" from the menu @PoomSmart (https://github.com/qnblackcat/uYouPlus/issues/1138#issuecomment-1606415080)
 %hook YTMenuItemVisibilityHandler
 - (BOOL)shouldShowServiceItemRenderer:(YTIMenuConditionalServiceItemRenderer *)renderer {
-    if (renderer.icon.iconType == 251 || renderer.icon.iconType == 759) {
+    if (renderer.icon.iconType == 251) {
         return NO;
     } return %orig;
 }
@@ -322,7 +407,7 @@
 
 %hook YTMenuItemVisibilityHandlerImpl
 - (BOOL)shouldShowServiceItemRenderer:(YTIMenuConditionalServiceItemRenderer *)renderer {
-    if (renderer.icon.iconType == 251 || renderer.icon.iconType == 759) {
+    if (renderer.icon.iconType == 251) {
         return NO;
     } return %orig;
 }

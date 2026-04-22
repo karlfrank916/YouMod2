@@ -23,6 +23,20 @@
 #import <YouTubeHeader/ASCollectionView.h>
 #import <YouTubeHeader/ELMNodeController.h>
 
+#define IS_ENABLED(k) [[NSUserDefaults standardUserDefaults] boolForKey:k]
+#define YTPremiumLogo @"YouModYTPremiumLogo"
+#define HideYTLogo @"YouModHideYTLogo"
+#define CenterYTLogo @"YouModCenterYTLogo"
+#define HideNoti @"YouModHideNotificationButton"
+#define HideSearch @"YouModHideSearchButton"
+#define HideVoiceSearch @"YouModHideVoiceSearchButton"
+#define HideCast @"YouModHideCastButton"
+#define HideMixPlayLists @"YouModHideMixPlayLists"
+#define HideHoriShelf @"YouModHideHoriShelf"
+#define HideGenMusicShelf @"YouModHideGenMusicShelf"
+#define HideShortsShelf @"YouModHideShortsShelf"
+#define HideSubbar @"YouModHideSubbar"
+
 @interface YTTouchFeedbackController : YTCollectionViewCell
 @property (nonatomic, strong, readwrite) UIColor *feedbackColor;
 @end
@@ -116,26 +130,6 @@
 
 @interface YTPlayerResponse : NSObject
 @property (nonatomic, assign, readonly) YTIPlayerResponse *playerData;
-@end
-
-@interface MLQuickMenuVideoQualitySettingFormatConstraint : NSObject
-- (instancetype)initWithVideoQualitySetting:(int)settings formatSelectionReason:(NSInteger)reason qualityLabel:(NSString *)label;
-@end
-
-@interface MLFormat : NSObject
-@property (nonatomic, assign, readonly) NSString *qualityLabel;
-@property (nonatomic, assign, readonly) int singleDimensionResolution;
-@end
-
-@interface YTSingleVideoTime : NSObject
-@property (nonatomic, assign, readonly) CGFloat time;
-@end
-
-@interface YTSingleVideoController : NSObject
-@property (nonatomic, assign, readonly) float playbackRate;
-@property (nonatomic, assign, readonly) CGFloat totalMediaTime;
-@property (nonatomic, assign, readonly) NSArray *selectableVideoFormats;
-- (void)setVideoFormatConstraint:(MLQuickMenuVideoQualitySettingFormatConstraint *)formatConstraint;
 @end
 
 @interface YTPlayerViewController : UIViewController
@@ -289,14 +283,6 @@
 - (void)postManager:(UILongPressGestureRecognizer *)sender;
 - (void)savePFP:(UILongPressGestureRecognizer *)sender;
 - (void)commentManager:(UILongPressGestureRecognizer *)sender;
-@end
-
-@interface YTVarispeedSwitchControllerOption : NSObject
-- (id)initWithTitle:(NSString *)title rate:(float)rate;
-@end
-
-@interface YTVarispeedSwitchController : NSObject
-- (void)addActionForOption:(YTVarispeedSwitchControllerOption *)option;
 @end
 
 @interface YTLabel : UILabel

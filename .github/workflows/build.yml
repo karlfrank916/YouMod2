@@ -41,14 +41,14 @@ jobs:
       - name: Clone YouTubeHeader
         run: git clone --quiet --depth=1 https://github.com/PoomSmart/YouTubeHeader.git $THEOS/include/YouTubeHeader
 
-      # - name: Clone PSHeader
-      #   run: git clone --quiet --depth=1 https://github.com/PoomSmart/PSheader.git $THEOS/include/PSHeader
+      - name: Clone PSHeader
+        run: git clone --quiet --depth=1 https://github.com/PoomSmart/PSheader.git $THEOS/include/PSHeader
 
       - name: Build YouMod
         run: |
           cd YouMod
           echo "YOUMOD_VERSION=$(grep '^Version:' control | cut -d ' ' -f2)" >> $GITHUB_ENV
-          make clean package DEBUG=0 FINALPACKAGE=1 THEOS_PACKAGE_SCHEME=rootless
+          make clean package DEBUG=0 FINALPACKAGE=1
           make clean package DEBUG=0 FINALPACKAGE=1 THEOS_PACKAGE_SCHEME=roothide
           mv packages/*.deb ${{ github.workspace }}
 
