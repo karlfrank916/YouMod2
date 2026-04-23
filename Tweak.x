@@ -173,13 +173,14 @@
     return YES;
 }
 
+// Will disable this if this doesn't work
 - (void)layoutSubviews {
 	%orig;
-    MSHookIvar<YTTransportControlsButtonView *>(self, "_previousButtonView").backgroundColor = nil;
-    MSHookIvar<YTTransportControlsButtonView *>(self, "_nextButtonView").backgroundColor = nil;
-    MSHookIvar<YTTransportControlsButtonView *>(self, "_seekBackwardAccessibilityButtonView").backgroundColor = nil;
-    MSHookIvar<YTTransportControlsButtonView *>(self, "_seekForwardAccessibilityButtonView").backgroundColor = nil;
-    MSHookIvar<YTPlaybackButton *>(self, "_playPauseButton").backgroundColor = nil;
+    [[self valueForKey:@"_previousButtonView"] setBackgroundColor:nil];
+    [[self valueForKey:@"_nextButtonView"] setBackgroundColor:nil];
+    [[self valueForKey:@"_seekBackwardAccessibilityButtonView"] setBackgroundColor:nil];
+    [[self valueForKey:@"_seekForwardAccessibilityButtonView"] setBackgroundColor:nil];
+    [[self valueForKey:@"_playPauseButton"] setBackgroundColor:nil];
 }
 %end
 
