@@ -195,10 +195,6 @@ jobs:
         if: ${{ inputs.ytclassic }}
         run: git clone --quiet --depth=1 https://github.com/PoomSmart/YTClassicVideoQuality.git
 
-      - name: Clone youtube-native-share
-        if: ${{ inputs.ytshare }}
-        run: git clone --quiet --depth=1 https://github.com/jkhsjdhjs/youtube-native-share.git
-
       # - name: Clone VolumeBoostYT
       #   if: ${{ inputs.volboost }}
       #   run: git clone --quiet --depth=1 https://github.com/VasirakCalgux/VolumeBoostYT.git
