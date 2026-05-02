@@ -561,10 +561,19 @@ static void YouModAddEndTime(YTPlayerViewController *self, YTSingleVideoControll
         } else if (controlType == 3) {
             float speedSensitivity = 8.0; 
             float speedDelta = (-adjustedTranslation / self.view.bounds.size.height) * speedSensitivity;
-            float newSpeed = fmaxf(fminf(initialSpeed + speedDelta, 10.0), 0.25);
-            [self setPlaybackRate:newSpeed];
+            float rawSpeed = initialSpeed + speedDelta;
+            float clampedSpeed = fmaxf(fminf(rawSpeed, 10.0), 0.25);
+            // Quantize to 0.25x increments (e.g., 1.12 -> 1.0, 1.38 -> 1.25)
+            float steppedSpeed = roundf(clampedSpeed * 4.0) / 4.0;
+
+            // Only update if the stepped value has actually changed
+            static float lastUpdatedSpeed = 0;
+            if (steppedSpeed != lastUpdatedSpeed) {
+                [self setPlaybackRate:steppedSpeed];
+                lastUpdatedSpeed = steppedSpeed;
+            }
             symbolName = @"speedometer";
-            percentString = [NSString stringWithFormat:@" %.2fx", newSpeed];
+            percentString = [NSString stringWithFormat:@" %.2fx", steppedSpeed];
         }
 
         if (IS_ENABLED(GestureHUD) && symbolName) {
