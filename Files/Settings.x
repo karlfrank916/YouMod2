@@ -259,7 +259,7 @@ static NSString *GetCacheSize() { // YTLite - @dayanch96
             [YTSettingsSectionItemClass itemWithTitle:LOC(@"GESTURE_AREA")
                 titleDescription:LOC(@"GESTURE_AREA_DESC")
                 accessibilityIdentifier:nil
-                detailTextBlock:@"•"
+                detailTextBlock:nil
                 selectBlock:^BOOL (YTSettingsCell *cell, NSUInteger arg1) {
                     int selectedIndex = 1;
                     int currentVal = INTFORVAL(GestureActivationArea);
@@ -292,7 +292,7 @@ static NSString *GetCacheSize() { // YTLite - @dayanch96
             [YTSettingsSectionItemClass itemWithTitle:LOC(@"LEFT_SIDE_GESTURE")
                 titleDescription:nil
                 accessibilityIdentifier:nil
-                detailTextBlock:@"•"
+                detailTextBlock:nil
                 selectBlock:^BOOL (YTSettingsCell *cell, NSUInteger arg1) {
                     int currentVal = [[NSUserDefaults standardUserDefaults] objectForKey:LeftSideGesture] ? INTFORVAL(LeftSideGesture) : 1;
                     NSArray <YTSettingsSectionItem *> *rows = @[
@@ -309,7 +309,7 @@ static NSString *GetCacheSize() { // YTLite - @dayanch96
             [YTSettingsSectionItemClass itemWithTitle:LOC(@"RIGHT_SIDE_GESTURE")
                 titleDescription:nil
                 accessibilityIdentifier:nil
-                detailTextBlock:@"•"
+                detailTextBlock:nil
                 selectBlock:^BOOL (YTSettingsCell *cell, NSUInteger arg1) {
                     int currentVal = [[NSUserDefaults standardUserDefaults] objectForKey:RightSideGesture] ? INTFORVAL(RightSideGesture) : 2;
                     NSArray <YTSettingsSectionItem *> *rows = @[
@@ -327,7 +327,7 @@ static NSString *GetCacheSize() { // YTLite - @dayanch96
             [YTSettingsSectionItemClass itemWithTitle:LOC(@"GESTURE_HUD_SIZE")
                 titleDescription:LOC(@"GESTURE_HUD_SIZE_DESC")
                 accessibilityIdentifier:nil
-                detailTextBlock:@"•"
+                detailTextBlock:nil
                 selectBlock:^BOOL (YTSettingsCell *cell, NSUInteger arg1) {
                     int currentVal = [[NSUserDefaults standardUserDefaults] objectForKey:@"GestureHUDSize"] ? (int)[[NSUserDefaults standardUserDefaults] integerForKey:@"GestureHUDSize"] : 1;
                     NSArray <YTSettingsSectionItem *> *rows = @[
@@ -345,7 +345,7 @@ static NSString *GetCacheSize() { // YTLite - @dayanch96
             [YTSettingsSectionItemClass itemWithTitle:LOC(@"GESTURE_HUD_POSITION")
                 titleDescription:LOC(@"GESTURE_HUD_POSITION_DESC")
                 accessibilityIdentifier:nil
-                detailTextBlock:@"•"
+                detailTextBlock:nil
                 selectBlock:^BOOL (YTSettingsCell *cell, NSUInteger arg1) {
                     int currentVal = [[NSUserDefaults standardUserDefaults] objectForKey:@"GestureHUDPosition"] ? (int)[[NSUserDefaults standardUserDefaults] integerForKey:@"GestureHUDPosition"] : 0;
                     NSArray <YTSettingsSectionItem *> *rows = @[
@@ -432,7 +432,7 @@ static NSString *GetCacheSize() { // YTLite - @dayanch96
             [YTSettingsSectionItemClass itemWithTitle:LOC(@"DEFAULT_TAB")
             titleDescription:LOC(@"DEFAULT_TAB_DESC")
             accessibilityIdentifier:nil
-            detailTextBlock:@"•"
+            detailTextBlock:nil
             selectBlock:^BOOL (YTSettingsCell *cell, NSUInteger arg1) {
                 NSArray <YTSettingsSectionItem *> *rows = @[
                     [YTSettingsSectionItemClass checkmarkItemWithTitle:LOC(@"HOME_NAME") titleDescription:nil selectBlock:^BOOL (YTSettingsCell *cell, NSUInteger arg1) {

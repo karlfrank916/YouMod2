@@ -39,7 +39,7 @@ static BOOL isDarkMode(UIView *view) {
     return self.pageStyle == 1 ? [UIColor blackColor] : %orig;
 }
 - (UIColor *)brandBackgroundSecondary {
-    return self.pageStyle == 1 ? [[UIColor blackColor] colorWithAlphaComponent:0.9] : %orig;
+    return self.pageStyle == 1 ? [UIColor blackColor] : %orig;
 }
 - (UIColor *)raisedBackground {
     return self.pageStyle == 1 ? [UIColor blackColor] : %orig;
@@ -48,6 +48,12 @@ static BOOL isDarkMode(UIView *view) {
     return self.pageStyle == 1 ? [UIColor blackColor] : %orig;
 }
 - (UIColor *)generalBackgroundA {
+    return self.pageStyle == 1 ? [UIColor blackColor] : %orig;
+}
+- (UIColor *)generalBackgroundB {
+    return self.pageStyle == 1 ? [UIColor blackColor] : %orig;
+}
+- (UIColor *)generalBackgroundC {
     return self.pageStyle == 1 ? [UIColor blackColor] : %orig;
 }
 %end
