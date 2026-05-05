@@ -2295,7 +2295,7 @@ static void YouModShowDownloadManager(YTPlayerViewController *player, UIViewCont
 
     NSString *videoID = YouModVideoIDForPlayer(player);
     NSMutableArray *items = [NSMutableArray array];
-    [items addObject:[YouModMenuItem itemWithTitle:@"Download video" subtitle:@"Choose quality" icon:YouModIconImage(57) handler:^{
+    [items addObject:[YouModMenuItem itemWithTitle:@"Download video" subtitle:@"Choose quality" icon:YouModIconImage(658) handler:^{
         YouModShowVideoQualitySheet(player, presenter, sender);
     }]];
     [items addObject:[YouModMenuItem itemWithTitle:@"Download audio" subtitle:@"Choose format" icon:YouModIconImage(21) handler:^{
@@ -2304,7 +2304,7 @@ static void YouModShowDownloadManager(YTPlayerViewController *player, UIViewCont
     [items addObject:[YouModMenuItem itemWithTitle:@"Download captions" subtitle:@"Save subtitles as VTT" icon:YouModIconImage(637) handler:^{
         YouModShowCaptionsSheet(player, presenter, sender);
     }]];
-    [items addObject:[YouModMenuItem itemWithTitle:@"Copy diagnostics" subtitle:@"Copy last error log" icon:YouModIconImage(636) handler:^{
+    [items addObject:[YouModMenuItem itemWithTitle:@"Copy diagnostics" subtitle:@"Copy last error log" icon:YouModIconImage(870) handler:^{
         YouModCopyDownloadDiagnostics(presenter);
     }]];
     [items addObject:[YouModMenuItem itemWithTitle:@"Save thumbnail" subtitle:@"Save to Photos" icon:YouModIconImage(367) handler:^{
