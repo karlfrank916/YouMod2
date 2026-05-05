@@ -47,7 +47,7 @@ This project uses GPLv3 license. See [LICENSE](https://github.com/Tonwalter888/Y
 - [YTLitePlus](https://github.com/YTLitePlus/YTLitePlus)
 - [uYouEnhanced](https://github.com/arichornlover/uYouEnhanced) - arichornlover
 - [YTweaks](https://github.com/fosterbarnes/YTweaks) - fosterbarnes
-- [@daisuke1227](https://github.com/daisuke1227) - Implementing download features
+- [daisuke1227](https://github.com/daisuke1227) - Implementing download features
 - And [PoomSmart](https://github.com/PoomSmart)'s tweaks
 
 Also thanks to all the contributors in the past!
